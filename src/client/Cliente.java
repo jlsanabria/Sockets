@@ -25,6 +25,7 @@ public class Cliente {
             DataInputStream recibirMensaje = new DataInputStream(socket.getInputStream());
             // Enviar mensajes al servidor
             DataOutputStream enviarMensaje = new DataOutputStream(socket.getOutputStream());
+
             Scanner teclado = new Scanner(System.in);
 
             System.out.println(recibirMensaje.readUTF()); // Mostrando el mensaje de bienvenida del servidor
