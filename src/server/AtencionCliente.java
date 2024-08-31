@@ -1,5 +1,7 @@
 package server;
 
+import util.DateUtil;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -30,11 +32,22 @@ public class AtencionCliente implements Runnable {
             String nombre = in.readUTF();
             System.out.println("Cliente conectado: " + nombre);
 
-            String mensaje;
-            while ((mensaje = teclado.nextLine()) != null) {
-                out.writeUTF("Servidor: " + mensaje);
-                System.out.println(nombre + ": " + in.readUTF());
-            }
+            String respuesta;
+            out.writeUTF(mostrarMenu());
+            boolean seguir = true;
+            do {
+                // Ejecutar las opciones de menú
+                respuesta = in.readUTF();
+                String resultado = ejecutarOpcion(respuesta);
+                if (!resultado.isEmpty()) {
+                    out.writeUTF(resultado);
+                } else {
+                    out.writeUTF("Bye!");
+                    seguir = false;
+                }
+            } while (seguir);
+
+            System.out.println("Cliente desconectado: " + nombre);
 
         } catch (IOException e) {
             System.out.println("Error en el envio/recibo de mensajes");
@@ -42,7 +55,30 @@ public class AtencionCliente implements Runnable {
         }
     }
 
-    private String horaActual() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+    private String mostrarMenu() {
+        //String menu = "";
+        StringBuilder menuBuilder = new StringBuilder();
+        menuBuilder.append("\n -----   MENÚ  ----- ");
+        menuBuilder.append("\n 1. Fecha (dd/MM/aaaa)");
+        menuBuilder.append("\n 2. Hora (HH:mm:ss)");
+        menuBuilder.append("\n 3. Salir");
+        //menu = menuBuilder.toString();
+        return menuBuilder.toString();
     }
+
+    private String ejecutarOpcion(String opcion) {
+        String response = "\n" + mostrarMenu();
+        switch (opcion) {
+            case "1":
+                response = "Fecha actual: " + DateUtil.fechaActual() + response;
+                break;
+            case "2":
+                response = "Hora actual: " + DateUtil.horaActual() + response;
+                break;
+            case "3":
+                return "";
+        }
+        return response;
+    }
+
 }

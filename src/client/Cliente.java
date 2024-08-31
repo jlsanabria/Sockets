@@ -19,7 +19,7 @@ public class Cliente {
     }
 
     public void conectar() {
-        try  {
+        try {
             socket = new Socket(host, port);
             // Recibir mensajes del servidor
             DataInputStream recibirMensaje = new DataInputStream(socket.getInputStream());
@@ -31,13 +31,18 @@ public class Cliente {
             System.out.println(recibirMensaje.readUTF()); // Mostrando el mensaje de bienvenida del servidor
 
             String respuesta;
-            while((respuesta = teclado.nextLine()) != null) {
+            while ((respuesta = teclado.nextLine()) != null) {
                 enviarMensaje.writeUTF(respuesta);
-                System.out.println(recibirMensaje.readUTF());
+                String mensaje = recibirMensaje.readUTF();
+                System.out.println(mensaje);
+                if (mensaje.equals("Bye!")) {
+                    break;
+                }
             }
+            System.out.println("Gracias :)");
 
         } catch (IOException e) {
-            if(e instanceof ConnectException) {
+            if (e instanceof ConnectException) {
                 System.out.println("No se puede conectar al servidor :(");
             }
             //throw new RuntimeException(e);
