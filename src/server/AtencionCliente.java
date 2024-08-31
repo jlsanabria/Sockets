@@ -61,7 +61,8 @@ public class AtencionCliente implements Runnable {
         menuBuilder.append("\n -----   MENÚ  ----- ");
         menuBuilder.append("\n 1. Fecha (dd/MM/aaaa)");
         menuBuilder.append("\n 2. Hora (HH:mm:ss)");
-        menuBuilder.append("\n 3. Salir");
+        menuBuilder.append("\n 3. Fecha y Hora (dd-MM-aaaa HH:mm)");
+        menuBuilder.append("\n 4. Salir");
         //menu = menuBuilder.toString();
         return menuBuilder.toString();
     }
@@ -76,6 +77,9 @@ public class AtencionCliente implements Runnable {
                 response = "Hora actual: " + DateUtil.horaActual() + response;
                 break;
             case "3":
+                response = "Fecha y Hora actual: " + DateUtil.fechaHoraActual() + response;
+                break;
+            case "4":
                 return "";
         }
         return response;
